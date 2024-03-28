@@ -2,20 +2,31 @@ package View;
 
 import javax.swing.JOptionPane;
 
-import Model.Funcionario;
+import Model.ContaBancaria;
 
 public class Main {
   public static void main(String[] args) {
-    Funcionario funcionario = new Funcionario();
+    ContaBancaria conta = new ContaBancaria();
+    conta.setNumeroConta(Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: ")));
+    conta.setNome(JOptionPane.showInputDialog("Digite o nome do titular da conta: "));
 
-    funcionario.setNome(JOptionPane.showInputDialog("Qual o nome do funcionário: "));
-    funcionario.setSalario(Double.parseDouble(JOptionPane.showInputDialog("Qual o salário do funcionário: ")));
-    funcionario.setCargo(JOptionPane.showInputDialog("Qual o cargo do funcionário: "));
+    while (true) {
+      int option = JOptionPane.showOptionDialog(null, "Escolha uma opção", "Menu", JOptionPane.DEFAULT_OPTION,
+          JOptionPane.INFORMATION_MESSAGE, null, new String[] { "Saque", "Depósito", "Sair" }, null);
+      if (option == 2) {
+        break;
+      }
+      efetuarTransacao(conta, option);
+    }
+  }
 
-    double descontos = Double.parseDouble(JOptionPane.showInputDialog("Qual o valor dos descontos: "));
-    double beneficios = Double.parseDouble(JOptionPane.showInputDialog("Qual o valor dos benefícios: "));
-    double salarioLiquido = funcionario.getSalarioLiquido(descontos, beneficios);
-    JOptionPane.showMessageDialog(null,
-        "O salário líquido do(a) funcionário(a) " + funcionario.getNome() + " é de R$ " + salarioLiquido);
+  static void efetuarTransacao(ContaBancaria conta, int option) {
+    if (option == 0) {
+      conta.realizarSaque(Double.parseDouble(JOptionPane.showInputDialog("Digite o valor do saque: ")));
+      JOptionPane.showMessageDialog(null, "Saldo atual: " + conta.getSaldo());
+    } else if (option == 1) {
+      conta.realizarDeposito(Double.parseDouble(JOptionPane.showInputDialog("Digite o valor do depósito: ")));
+      JOptionPane.showMessageDialog(null, "Saldo atual: " + conta.getSaldo());
+    }
   }
 }
